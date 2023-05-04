@@ -27,7 +27,35 @@ def read_csv_file(file_path):
         else:
             # If there is no data, return None
             return output
+        # -*- coding: utf-8 -*-
+"""
+Created on Wed May  3 15:57:03 2023
+
+@author: User
+"""
+
+import csv
+
+
+data = [['John', 25, 'Engineer'], ['Jane', 30, 'Manager'], ['Bob', 40, 'Salesperson']]
+
+
+with open('output.csv', 'w', newline='') as csvfile:
+    
+    writer = csv.writer(csvfile)
+
+    
+    row = 0
+    while True:
         
+        if row < len(data):
+         
+            writer.writerow(data[row])
+            
+            row += 1
+          
+        else:            
+            break
     
 
     
