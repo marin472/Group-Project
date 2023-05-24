@@ -1,3 +1,66 @@
+###Unit 10 group project task
+
+import csv
+from datetime import datetime
+
+# define csv reader function
+def read_csv(file_path):
+    data = []
+    with open(file_path, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            data.append(row)
+    return data
+
+# read category csv into a dictionary
+categories_csv = read_csv('categories.csv')
+categories = {}
+for row in categories_csv:
+    categories[row[0]] = row[1]
+
+# read transaction csv into a list of tuples
+transactions_csv = read_csv('transactions.csv')
+transactions = []
+for row in transactions_csv:
+    transaction = list(row)
+    transaction[1] = datetime.strptime(transaction[1], '%m/%d/%Y')
+    transaction[2] = float(transaction[2])
+    transaction.append(categories[transaction[3]])
+    transactions.append(transaction)
+
+# add a new transaction record with dummy data
+new_transaction = ['John Doe', datetime.today(), 25.0, 'Electronics']
+new_transaction.append(categories[new_transaction[3]])
+transactions.append(new_transaction)
+
+# sort transactions by category in ascending order
+transactions.sort(key=lambda x: x[4])
+
+# print transactions grouped by category
+category = ''
+for transaction in transactions:
+    if transaction[4] != category:
+        category = transaction[4]
+        print('=====' + category + '=====')
+    print(transaction[1].strftime('%m/%d/%Y') + ' ' + transaction[0] + ' ' + str(transaction[2]))
+    
+# calculate total amount for each category
+totals = {}
+for transaction in transactions:
+    if transaction[4] not in totals:
+        totals[transaction[4]] = 0.0
+    totals[transaction[4]] += transaction[2]
+
+# print total amount for each category
+for category, total in totals.items():
+    print(category + ' total: ' + str(total))
+
+
+
+
+
+
+###Unit 11 group project task
 import csv
 
 filename = 'expenses.csv'
