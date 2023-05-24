@@ -4,9 +4,9 @@ filename = 'expenses.csv'
 
 # Sample transaction data
 transactions = [
-    ['2023-05-01', 'Groceries', 50.25],
-    ['2023-05-02', 'Transportation', 15.50],
-    ['2023-05-03', 'Dinner', 35.75]
+    ['2023-05-01', '2023-05-02', '2023-05-03' ],
+    ['Groceries', 'Transportation', 'Dinner'],
+    ['50.25', '15.50', '35.75']
 ]
 
 # Function to read expense data from a file
@@ -18,7 +18,7 @@ def read_expense_data(filename):
         for row in reader:
             date = row[0]
             description = row[1]
-            amount = (row[2])
+            amount = float(row[2])
             try:
                amount = (amount)
             except ValueError:
@@ -33,7 +33,9 @@ def read_expense_data(filename):
 
 # Function to categorize expenses and income
 def categorize_transactions(transactions):
-    categories = ['Housing', 'Transportation', 'Job 1', 'Job 2']
+    categories = ['2023-05-01', '2023-05-02', '2023-05-03' ],
+    ['Groceries', 'Transportation', 'Dinner'],
+    ['50.25', '15.50', '35.75']
     categorized_transactions = []
     for transaction in transactions:
         print(f"Transaction: {transaction['description']}")
