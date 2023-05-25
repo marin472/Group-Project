@@ -49,7 +49,7 @@ def budgets_menu():
                 pass
     total_balance = total_income - total_expenses
     print("Your balance = ", total_balance)
-    def main():
+def main():
     while True:
         show_menu()
         choice = input("Enter your choice (1-4): ")
