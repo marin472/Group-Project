@@ -23,7 +23,7 @@ def expenses_menu():
 def savings_goals_menu():
     print("\n===== Savings Goals Menu =====")
     # Add your savings goals-related options here
-
+    csvreader.read_csv_file("Savings Goal")
 
 def budgets_menu():
     print("\n===== Budgets Menu =====")
