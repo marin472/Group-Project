@@ -1,9 +1,9 @@
 import csv
 from datetime import datetime
 
-def read_csv_file(file_path):
+def read_csv_file(file_path, delimiter=';'):
     with open(file_path, 'r') as csv_file:
-        reader = csv.DictReader(csv_file)
+        reader = csv.DictReader(csv_file, delimiter=delimiter)
         next(reader)
         data = []
         for row in reader:
@@ -20,12 +20,14 @@ def read_csv_file(file_path):
 category_data = read_csv_file('Categories.csv')
 category_dict = {}
 for row in category_data:
-    category_dict[row['Description']] = row['Category']
+    print(row)
+    category_dict[row['\ufeffDescription']] = row['Category']
 
-transaction_data = read_csv_file('transactions.csv')
+transaction_data = read_csv_file('Transactions.csv')
 transaction_list = []
 for row in transaction_data:
-    transaction_list.append((row['Date'], row['Description'], row['Amount']))
+    print(row)
+    transaction_list.append((row['\ufeffDate'], row['Description'], row['Amount']))
 
 for i in range(len(transaction_list)):
     category = category_dict.get(transaction_list[i][1], '')
