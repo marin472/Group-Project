@@ -18,7 +18,7 @@ def show_menu():
 def expenses_menu():
     print("\n===== Expenses Menu =====")
     # Add your expenses-related options here
-    csvreader.read_csv_file("Expense")
+    csvreader.read_csv_file("Categories")
 
 def savings_goals_menu():
     print("\n===== Savings Goals Menu =====")
