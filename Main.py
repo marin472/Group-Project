@@ -5,6 +5,8 @@ Created on Wed May  3 16:56:23 2023
 @author: sarah
 """
 
+import csvreader
+
 def show_menu():
     print("\n===== Budget Management System =====")
     print("1. Expenses")
@@ -16,7 +18,7 @@ def show_menu():
 def expenses_menu():
     print("\n===== Expenses Menu =====")
     # Add your expenses-related options here
-
+    csvreader.read_csv_file("Expense")
 
 def savings_goals_menu():
     print("\n===== Savings Goals Menu =====")
@@ -49,4 +51,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-import csvreader
