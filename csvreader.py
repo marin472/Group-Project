@@ -17,7 +17,7 @@ def read_csv_file(file_path):
             data.append(row)
         return data
 
-category_data = read_csv_file('categories.csv')
+category_data = read_csv_file('Categories.csv')
 category_dict = {}
 for row in category_data:
     category_dict[row['Description']] = row['Category']
