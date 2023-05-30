@@ -23,7 +23,15 @@ def expenses_menu():
 def savings_goals_menu():
     print("\n===== Savings Goals Menu =====")
     # Add your savings goals-related options here
-    csvreader.read_csv_file("Savings Goal.csv")
+    with open ('savings goal.csv' , 'r') as csvfile:
+        csv_reader = csv.reader(csvfile)
+         for row in reader:
+                goal_name = row[0]
+                target_amount = float (row[1])
+                current_amount = float(row[1])
+                
+              
+                            
 
 def budgets_menu():
     print("\n===== Budgets Menu =====")
