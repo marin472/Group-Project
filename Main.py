@@ -28,7 +28,7 @@ def savings_goals_menu():
          for row in reader:
                 goal_name = row[0]
                 target_amount = float (row[1])
-                current_amount = float(row[1])
+                current_amount = float(row[2])
                 
               
                             
