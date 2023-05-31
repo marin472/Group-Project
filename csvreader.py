@@ -56,14 +56,17 @@ def getExpCat():
              
     current_category = ''
     for transaction in transaction_list:
-                 if transaction[3] != current_category:
-                     print('====={}====='.format(transaction[3]))
+                if transaction[3] != current_category:
+                     print('\n====={}====='.format(transaction[3]))
                      current_category = transaction[3]
-                 print('{}   {}   {:.2f}'.format(transaction[0].strftime('%d/%m/%Y'), transaction[1], transaction[2]))
-             
+                print('{:<12s} {:<30s} {:>10.2f}'.format(transaction[0].strftime('%d/%m/%Y'), transaction[1], transaction[2]))
+                
     category_totals = {}
     for transaction in transaction_list:
                  category_totals[transaction[3]] = category_totals.get(transaction[3], 0) + transaction[2]
-                 
+    
+    print('\nCategory Totals:')
     for category, total in category_totals.items():
-                 print('{}: {:.2f}'.format(category, total))
+                 print('{:<48s} {:.2f}'.format(category, total))
+                 
+getExpCat()
