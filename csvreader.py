@@ -68,3 +68,24 @@ def getExpCat():
     print('\nCategory Totals:')
     for category, total in category_totals.items():
                  print('{:<48s} {:.2f}'.format(category, total))
+                 
+def getSavGoal():
+    savings_goal_data = read_csv_file('savings goal.csv')
+    savings_goal_list = []
+    for row in savings_goal_data:
+        print(row)
+    goal_name = row[0]
+    target_amount = float(row[1])
+    current_amount = float(row[2])
+    savings_goal_list.append((goal_name, target_amount, current_amount))
+ 
+    for goal in savings_goal_list:
+        print('Goal: {}'.format(goal[0]))
+        print('Target Amount: {:.2f}'.format(goal[1]))
+        print('Current Amount: {:.2f}'.format(goal[2]))
+        print('Progress: {:.2f}%'.format((goal[2] / goal[1]) * 100))
+        print()
+       
+getExpCat()          
+getSavGoal()
+                 
