@@ -68,5 +68,3 @@ def getExpCat():
     print('\nCategory Totals:')
     for category, total in category_totals.items():
                  print('{:<48s} {:.2f}'.format(category, total))
-                 
-getExpCat()
