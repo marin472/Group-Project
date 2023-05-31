@@ -27,7 +27,7 @@ def getExpCat():
              category_dict[row['\ufeffDescription']] = row['Category']
          except:
              try:
-                 category_dict[row['\ï»¿Description']] = row['Category']
+                 category_dict[row['ï»¿Description']] = row['Category']
              except:
                  print('error reading your file')
         
@@ -38,10 +38,10 @@ def getExpCat():
          print(row)
          try:
             
-            transaction_list.append((row['\ufeffDate'], row['Description'], row['Amount']))
+            transaction_list.append((datetime.strptime(row['\ufeffDate'], '%d/%m/%Y').date(), row['Description'], row['Amount']))
          except:
             try:
-                transaction_list.append((row['\ï»¿Date'], row['Description'], row['Amount']))
+                transaction_list.append((datetime.strptime(row['ï»¿Date'], '%d/%m/%Y').date(), row['Description'], row['Amount']))
             except:
                 print('error reading your file')
      
@@ -59,7 +59,7 @@ def getExpCat():
                  if transaction[3] != current_category:
                      print('====={}====='.format(transaction[3]))
                      current_category = transaction[3]
-                 print('{}   {}   {:.2f}'.format(datetime.strftime(transaction[0], '%d/%m/%Y'), transaction[1], transaction[2]))
+                 print('{}   {}   {:.2f}'.format(transaction[0].strftime('%d/%m/%Y'), transaction[1], transaction[2]))
              
     category_totals = {}
     for transaction in transaction_list:
