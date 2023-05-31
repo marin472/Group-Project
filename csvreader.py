@@ -22,13 +22,28 @@ def getExpCat():
     category_dict = {}
     for row in category_data:
          print(row)
-         category_dict[row['\ufeffDescription']] = row['Category']
+         try:
+             
+             category_dict[row['\ufeffDescription']] = row['Category']
+         except:
+             try:
+                 category_dict[row['\ï»¿Description']] = row['Category']
+             except:
+                 print('error reading your file')
+        
      
     transaction_data = read_csv_file('Transactions.csv')
     transaction_list = []
     for row in transaction_data:
          print(row)
-         transaction_list.append((row['\ufeffDate'], row['Description'], row['Amount']))
+         try:
+            
+            transaction_list.append((row['\ufeffDate'], row['Description'], row['Amount']))
+         except:
+            try:
+                transaction_list.append((row['\ï»¿Date'], row['Description'], row['Amount']))
+            except:
+                print('error reading your file')
      
     for i in range(len(transaction_list)):
          category = category_dict.get(transaction_list[i][1], '')
