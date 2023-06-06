@@ -6,6 +6,7 @@ Created on Wed May  3 16:56:23 2023
 """
 
 import csvreader
+import csv
 
 def show_menu():
     print("\n===== Budget Management System =====")
@@ -13,7 +14,6 @@ def show_menu():
     print("2. Savings Goals")
     print("3. Budgets")
     print("4. Exit")
-
 
 def expenses_menu():
     print("\n===== Expenses Menu =====")
@@ -23,20 +23,12 @@ def expenses_menu():
 def savings_goals_menu():
     print("\n===== Savings Goals Menu =====")
     # Add your savings goals-related options here
-    with open ('savings goal.csv' , 'r') as csvfile:
-        csv_reader = csv.reader(csvfile)
-         for row in reader:
-                goal_name = row[0]
-                target_amount = float (row[1])
-                current_amount = float(row[2])
+    csvreader.getSavGoal()
                 
-              
-                            
-
 def budgets_menu():
     print("\n===== Budgets Menu =====")
     with open('income.csv', 'r') as csvfile:
-    reader = csv.reader(csvfile)
+        reader = csv.reader(csvfile)
     total_income = 0
     for row in reader:
         
@@ -46,7 +38,7 @@ def budgets_menu():
             except ValueError:
                 pass
     with open('expenses.csv', 'r') as csvfile:
-    reader = csv.reader(csvfile)
+        reader = csv.reader(csvfile)
     total_expenses = 0
     for row in reader:
         
