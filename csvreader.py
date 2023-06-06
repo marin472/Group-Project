@@ -70,25 +70,33 @@ def getExpCat():
                  print('{:<48s} {:.2f}'.format(category, total))
                  
 def getSavGoal():
-    savings_goal_data = read_csv_file('Savings Goal.csv', delimiter=',')
     savings_goal_list = []
     
-    for row in savings_goal_data:
-        print(row)
-        goal_name = row['Goal description']
-        target_amount = float(row['Target Amount(Euro)'].replace(',', ''))
-        current_amount = float(row['Current Amount(Euro)'].replace(',', ''))
-        savings_goal_list.append((goal_name, target_amount, current_amount))
+    while True:
+        goal_description = input("Enter goal description (or 'done' to finish): ")
+        if goal_description == 'done':
+            break
+        
+        target_amount = float(input("Enter target amount (Euro): "))
+        current_amount = float(input("Enter current amount (Euro): "))
+        
+        savings_goal_list.append((goal_description, target_amount, current_amount))
        
     for i, goal in enumerate(savings_goal_list, start=1):
         print('Goal {}:'.format(i))
-        print('  Name: {}'.format(goal[0]))
+        print('  Description: {}'.format(goal[0]))
         print('  Target Amount: {:.2f} Euro'.format(goal[1]))
         print('  Current Amount: {:.2f} Euro'.format(goal[2]))
         progress = (goal[2] / goal[1]) * 100
         print('  Progress: {:.2f}%'.format(progress))
         print()
-     
-getExpCat()          
-getSavGoal()
+
+
+
+
+
+
+
+
+
                  
