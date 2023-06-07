@@ -103,7 +103,7 @@ def getSavGoal():
 
     average_monthly_income = sum(monthly_incomes) / len(monthly_incomes)
 
-    total_percentage = 0
+    total_percentage = 0  
     while True:
         goal_description = input("Enter goal description (or 'done' to finish): ")
         if goal_description == 'done':
@@ -112,6 +112,7 @@ def getSavGoal():
         target_amount = float(input("Enter target amount (Euro): "))
         current_amount = float(input("Enter current amount (Euro): "))
 
+        
         while True:
             percentage = float(input("Enter the percentage of your monthly income for this goal: "))
             if total_percentage + percentage <= 100:
@@ -131,11 +132,13 @@ def getSavGoal():
         progress = (goal[2] / goal[1]) * 100
         print('  Progress: {:.2f}%'.format(progress))
 
-      
+        
         months_required = (goal[1] - goal[2]) / goal[3]
-        months_required = max(months_required, 0)
+
+        
+        months_required = max(months_required, 0)  
         whole_months = int(months_required)
-        remaining_days = (months_required - whole_months) * 30
+        remaining_days = (months_required - whole_months) * 30  
         if remaining_days >= 15:
             whole_months += 1
 
