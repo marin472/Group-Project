@@ -147,11 +147,14 @@ def getSavGoal():
         target_year = datetime.now().year + (target_month // 12)
         target_month = target_month % 12 or 12
         target_date = datetime(target_year, target_month, 1).strftime('%B %Y')
-
+        
+        
         print('  Amount to save each month: {:.2f} Euro'.format(goal[3]))
         print('  Months required to reach the goal: {:.1f}'.format(months_required))
         print('  Estimated completion date: {}'.format(target_date))
         print()
+
+                 
 
 
                  
