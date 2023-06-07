@@ -26,8 +26,6 @@ def savings_goals_menu():
     csvreader.getSavGoal()
                 
 def budgets_menu():
-    print("\n===== Budgets Menu =====")
-    
     with open('income.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         total_income = 0
@@ -37,7 +35,7 @@ def budgets_menu():
                     total_income += int(item)
                 except ValueError:
                     pass
-    
+
     with open('expenses.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         total_expenses = 0
@@ -47,6 +45,13 @@ def budgets_menu():
                     total_expenses += int(item)
                 except ValueError:
                     pass
+    total_income = total_income
+    total_expenses = total_expenses
+    total_balance = total_income - total_expenses
+    print("Your total income is :" , total_income)
+    print("your expenses : " , total_expenses)
+    print(f'Your total balance is : {total_income} - {total_expenses} = {total_balance} ')
+    
     
     total_balance = total_income - total_expenses
     print("Your balance = ", total_balance)
