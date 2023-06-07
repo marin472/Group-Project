@@ -71,17 +71,48 @@ def getExpCat():
                  
 def getSavGoal():
     savings_goal_list = []
-    
+
+    monthly_incomes = []
+    with open('income.csv', 'r') as file:
+        reader = csv.DictReader(file)
+
+        dates = []
+        amounts = []
+        for row in reader:
+            date_str = row['Date']
+            amount = float(row['Amount(Euro)'])
+
+            dates.append(date_str)
+            amounts.append(amount)
+
+        if len(amounts) <= 1:
+            print("Not enough data to calculate monthly income.")
+            return
+
+        for i in range(1, len(amounts)):
+            date1 = datetime.strptime(dates[i - 1], '%d/%m/%Y')
+            date2 = datetime.strptime(dates[i], '%d/%m/%Y')
+
+            months_diff = (date2.year - date1.year) * 12 + (date2.month - date1.month)
+            income_per_month = amounts[i - 1] / months_diff
+            monthly_incomes.append(income_per_month)
+
+    if len(monthly_incomes) == 0:
+        print("Not enough data to calculate monthly income.")
+        return
+
+    average_monthly_income = sum(monthly_incomes) / len(monthly_incomes)
+
     while True:
         goal_description = input("Enter goal description (or 'done' to finish): ")
         if goal_description == 'done':
             break
-        
+
         target_amount = float(input("Enter target amount (Euro): "))
         current_amount = float(input("Enter current amount (Euro): "))
-        
+
         savings_goal_list.append((goal_description, target_amount, current_amount))
-       
+
     for i, goal in enumerate(savings_goal_list, start=1):
         print('Goal {}:'.format(i))
         print('  Description: {}'.format(goal[0]))
@@ -89,13 +120,23 @@ def getSavGoal():
         print('  Current Amount: {:.2f} Euro'.format(goal[2]))
         progress = (goal[2] / goal[1]) * 100
         print('  Progress: {:.2f}%'.format(progress))
+        
+        months_required = (goal[1] - goal[2]) / average_monthly_income
+        months_required = max(months_required, 0)
+        whole_months = int(months_required)
+        remaining_days = (months_required - whole_months) * 30
+        if remaining_days >= 15:
+            whole_months += 1
+
+        current_month = datetime.now().month
+        target_month = current_month + whole_months
+        target_year = datetime.now().year + (target_month // 12)
+        target_month = target_month % 12 or 12
+        target_date = datetime(target_year, target_month, 1).strftime('%B %Y')
+
+        print('  Months required to reach the goal: {:.1f}'.format(months_required))
+        print('  Estimated completion date: {}'.format(target_date))
         print()
-
-
-
-
-
-
 
 
 
