@@ -131,7 +131,7 @@ def getSavGoal():
 
     monthly_incomes = []
     with open('income.csv', 'r') as file:
-        reader = csv.DictReader(file)
+        reader = csv.Dictreader(file)
 
         dates = []
         amounts = []
