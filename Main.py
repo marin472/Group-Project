@@ -26,15 +26,40 @@ def savings_goals_menu():
     csvreader.getSavGoal()
                 
 def budgets_menu():
-    with open('income.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        total_income = 0
-        for row in reader:
-            for item in row:
-                try:
-                    total_income += int(item)
-                except ValueError:
-                    pass
+    print("\n===== Budgets Menu =====")
+    total_income = get_csv_total('income.csv')
+    total_expenses = get_csv_total('expenses.csv')
+
+    if total_income is not None and total_expenses is not None:
+        total_balance = total_income - total_expenses
+        print("Your total income is:", total_income)
+        print("Your total expenses are:", total_expenses)
+        print("Your total balance is:", total_balance)
+
+def create_custom_budget(total_balance):
+    budget_name = input("Enter a name for your custom budget: ")
+    budget_amount = input("Enter the amount to allocate for this budget: ")
+
+    try:
+        allocated_amount = int(budget_amount)
+        remaining_balance = total_balance - allocated_amount
+        print("Budget created successfully!")
+        print(f"'{budget_name}' budget has been allocated {allocated_amount}.")
+        print(f"Remaining balance: {remaining_balance}")
+    except ValueError:
+        print("Invalid input. Please enter a valid number for the allocated amount.")
+
+def custom_budget():
+    total_income = get_csv_total('income.csv')
+    total_expenses = get_csv_total('expenses.csv')
+
+    if total_income is not None and total_expenses is not None:
+        total_balance = total_income - total_expenses
+        print("Your total income is:", total_income)
+        print("Your total expenses are:", total_expenses)
+        print("Your total balance is:", total_balance)
+
+        create_custom_budget(total_balance)
 
     with open('expenses.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
