@@ -113,31 +113,57 @@ def get_expenses_per_month(start_date, end_date):
                 expenses += amount
 
     return expenses
+    
+
+def get_expenses_per_month(start_date, end_date):
+    start_date = datetime.combine(start_date, datetime.min.time()).date()
+    end_date = datetime.combine(end_date, datetime.min.time()).date()
+
+    total_expenses = 0
+    with open('Transactions.csv', 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            try:
+                date_str = row['Date']
+                expense_date = datetime.strptime(date_str, '%d/%m/%Y').date()
+                if start_date <= expense_date <= end_date:
+                    amount = row['Amount(Euro)']
+                    if amount and amount != '':
+                        total_expenses += float(amount)
+            except KeyError:
+                continue
+    return total_expenses
+
+def fix_input_number(input_value):
+    return float(input_value) if input_value is not None and input_value != '' else 0.0
+
 
 def calculate_adjusted_months_required(goal, average_monthly_income, expenses_per_month):
     target_amount, current_amount, monthly_saving = goal
 
-    adjusted_monthly_income = average_monthly_income - expenses_per_month
+    if monthly_saving == 0:
+        return float('inf')  # Goal not achievable with current income and expenses
+    elif average_monthly_income == 0:
+        return -1  # Goal cannot be reached with current income and expenses
 
-    if adjusted_monthly_income <= 0:
-        return float('inf')
+    remaining_amount = target_amount - current_amount
+    months_required = remaining_amount / monthly_saving
 
-    adjusted_months_required = (target_amount - current_amount) / adjusted_monthly_income
+    return months_required
 
-    return adjusted_months_required
 
 def getSavGoal():
     savings_goal_list = []
 
     monthly_incomes = []
     with open('income.csv', 'r') as file:
-        reader = csv.Dictreader(file)
+        reader = csv.DictReader(file)
 
         dates = []
         amounts = []
         for row in reader:
             date_str = row['Date']
-            amount = float(row['Amount(Euro)'])
+            amount = fix_input_number(row['Amount(Euro)'])
 
             dates.append(date_str)
             amounts.append(amount)
@@ -151,14 +177,19 @@ def getSavGoal():
             date2 = datetime.strptime(dates[i], '%d/%m/%Y')
 
             months_diff = (date2.year - date1.year) * 12 + (date2.month - date1.month)
+            
+            if months_diff == 0:
+                print("Error: Months difference is zero.")
+                continue  # Skip the current iteration and move to the next one
 
-            income_per_month = (amounts[i - 1] - get_expenses_per_month(date1, date2)) / fix_division_by_zero(months_diff)
+            income_per_month = (amounts[i - 1] - get_expenses_per_month(date1, date2)) / months_diff
             monthly_incomes.append(income_per_month)
 
     if len(monthly_incomes) == 0:
         print("Not enough data to calculate monthly income.")
         return
 
+   
     average_monthly_income = sum(monthly_incomes) / len(monthly_incomes)
 
     add_goal = True
@@ -179,7 +210,7 @@ def getSavGoal():
 
             percentage_str = input("Enter the percentage of your monthly income for this goal: ")
             try:
-                percentage = parse_percentage(percentage_str)
+                percentage = float(percentage_str)
                 if total_percentage + percentage <= 100:
                     break
                 print("Total percentage exceeds 100. Please enter a percentage within the available range.")
@@ -244,4 +275,7 @@ def getSavGoal():
             print('  Amount to save each month: {:.2f} Euro'.format(monthly_saving))
             print('  Months required to reach the goal: {:.1f}'.format(adjusted_months_required))
             print('  Estimated completion date: {}'.format(target_date))
+
+getSavGoal()
+
             
