@@ -75,10 +75,8 @@ def getExpCat():
     print('\nCategory Totals:')
     for category, total in category_totals.items():
                  print('{:<48s} {:.2f}'.format(category, total))
-                 
-    
 
-def get_expenses_per_month(start_date, end_date):
+        def get_expenses_per_month(start_date, end_date):
     start_date = datetime.combine(start_date, datetime.min.time()).date()
     end_date = datetime.combine(end_date, datetime.min.time()).date()
 
@@ -93,27 +91,32 @@ def get_expenses_per_month(start_date, end_date):
                     amount = row['Amount(Euro)']
                     if amount and amount != '':
                         total_expenses += float(amount)
-            except KeyError:
+            except KeyError as e:
+                print("Error accessing 'Date' or 'Amount(Euro)' field:", e)
                 continue
     return total_expenses
 
 def fix_input_number(input_value):
     return float(input_value) if input_value is not None and input_value != '' else 0.0
 
+class GoalNotAchievable(Exception):
+    pass
+
+class GoalCannotBeReached(Exception):
+    pass
 
 def calculate_adjusted_months_required(goal, average_monthly_income, expenses_per_month):
     target_amount, current_amount, monthly_saving = goal
 
     if monthly_saving == 0:
-        return float('inf')  # Goal not achievable with current income and expenses
+        raise GoalNotAchievable
     elif average_monthly_income == 0:
-        return -1  # Goal cannot be reached with current income and expenses
+        raise GoalCannotBeReached
 
     remaining_amount = target_amount - current_amount
     months_required = remaining_amount / monthly_saving
 
     return months_required
-
 
 def getSavGoal():
     savings_goal_list = []
@@ -140,7 +143,7 @@ def getSavGoal():
             date2 = datetime.strptime(dates[i], '%d/%m/%Y')
 
             months_diff = (date2.year - date1.year) * 12 + (date2.month - date1.month)
-            
+
             if months_diff == 0:
                 print("Error: Months difference is zero.")
                 continue  # Skip the current iteration and move to the next one
@@ -152,7 +155,6 @@ def getSavGoal():
         print("Not enough data to calculate monthly income.")
         return
 
-   
     average_monthly_income = sum(monthly_incomes) / len(monthly_incomes)
 
     add_goal = True
@@ -174,9 +176,9 @@ def getSavGoal():
             percentage_str = input("Enter the percentage of your monthly income for this goal: ")
             try:
                 percentage = float(percentage_str)
-                if total_percentage + percentage <= 100:
+                if 0 <= percentage <= 100:
                     break
-                print("Total percentage exceeds 100. Please enter a percentage within the available range.")
+                print("Percentage must be between 0 and 100.")
             except ValueError:
                 print("Invalid input. Please enter a valid percentage.")
 
@@ -211,35 +213,40 @@ def getSavGoal():
         progress = (current_amount / target_amount) * 100
         print('  Progress: {:.2f}%'.format(progress))
 
-        adjusted_months_required = calculate_adjusted_months_required(goal, average_monthly_income, expenses_per_month)
-
-        if adjusted_months_required == float('inf'):
+        try:
+            adjusted_months_required = calculate_adjusted_months_required(goal, average_monthly_income, expenses_per_month)
+        except GoalNotAchievable:
             print('  Amount to save each month: {:.2f} Euro'.format(monthly_saving))
             print('  Months required to reach the goal: Goal not achievable with current income and expenses')
             print('  Estimated completion date: Not applicable')
-        elif adjusted_months_required < 0:
+            continue
+        except GoalCannotBeReached:
             print('  Amount to save each month: {:.2f} Euro'.format(monthly_saving))
             print('  Months required to reach the goal: Goal cannot be reached with current income and expenses')
             print('  Estimated completion date: Not applicable')
-        else:
-            adjusted_months_required += expenses_per_month / average_monthly_income
-            whole_months = int(adjusted_months_required)
-            remaining_days = (adjusted_months_required - whole_months) * 30
+            continue
 
-            if remaining_days >= 15:
-                whole_months += 1
+        adjusted_months_required += expenses_per_month / average_monthly_income
+        whole_months = int(adjusted_months_required)
+        remaining_days = (adjusted_months_required - whole_months) * 30
 
-            current_month = datetime.now().month
-            target_month = current_month + whole_months
-            target_year = datetime.now().year + (target_month // 12)
-            target_month = target_month % 12 or 12
-            target_date = datetime(target_year, target_month, 1).strftime('%B %Y')
+        if remaining_days >= 15:
+            whole_months += 1
 
-            print('  Amount to save each month: {:.2f} Euro'.format(monthly_saving))
-            print('  Months required to reach the goal: {:.1f}'.format(adjusted_months_required))
-            print('  Estimated completion date: {}'.format(target_date))
+        current_month = datetime.now().month
+        target_month = current_month + whole_months
+        target_year = datetime.now().year + (target_month // 12)
+        target_month = target_month % 12 or 12
+        target_date = datetime(target_year, target_month, 1).strftime('%B %Y')
+
+        print('  Amount to save each month: {:.2f} Euro'.format(monthly_saving))
+        print('  Months required to reach the goal: {:.1f}'.format(adjusted_months_required))
+        print('  Estimated completion date: {}'.format(target_date))
 
 getSavGoal()
+                 
+    
+
 
 
 
