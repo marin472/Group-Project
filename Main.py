@@ -27,6 +27,8 @@ def savings_goals_menu():
                 
 def budgets_menu():
     print("\n===== Budgets Menu =====")
+    inflation_rate = 0.02  # Assuming a 2% monthly inflation rate for expenses
+
     total_income = get_csv_total('income.csv')
     total_expenses = get_csv_total('expenses.csv')
 
@@ -35,6 +37,15 @@ def budgets_menu():
         print("Your total income is:", total_income)
         print("Your total expenses are:", total_expenses)
         print("Your total balance is:", total_balance)
+
+        for month in range(1, 4):
+            inflated_expenses = total_expenses * (1 + inflation_rate)  # Calculate inflated expenses
+            monthly_balance = total_income - inflated_expenses
+
+            print(f"\n===== Budget for Month {month} =====")
+            print("Your total income for this month is:", total_income)
+            print("Your total expenses for this month are:", inflated_expenses)
+            print("Your total balance for this month is:", monthly_balance)
 
 def create_custom_budget(total_balance):
     budget_name = input("Enter a name for your custom budget: ")
