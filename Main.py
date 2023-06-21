@@ -41,7 +41,7 @@ def create_custom_budget(total_balance):
     budget_amount = input("Enter the amount to allocate for this budget: ")
 
     try:
-        allocated_amount = int(budget_amount)
+        allocated_amount = float(budget_amount)
         remaining_balance = total_balance - allocated_amount
         print("Budget created successfully!")
         print(f"'{budget_name}' budget has been allocated {allocated_amount}.")
@@ -61,25 +61,11 @@ def custom_budget():
 
         create_custom_budget(total_balance)
 
-    with open('expenses.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        total_expenses = 0
-        for row in reader:
-            for item in row:
-                try:
-                    total_expenses += int(item)
-                except ValueError:
-                    pass
-    total_income = total_income
-    total_expenses = total_expenses
+    total_expenses = get_csv_total('expenses.csv')
     total_balance = total_income - total_expenses
-    print("Your total income is :" , total_income)
-    print("your expenses : " , total_expenses)
-    print(f'Your total balance is : {total_income} - {total_expenses} = {total_balance} ')
-    
-    
-    total_balance = total_income - total_expenses
-    print("Your balance = ", total_balance)
+    print("Your total income is:", total_income)
+    print("Your total expenses are:", total_expenses)
+    print("Your total balance is:", total_balance)
 
 
 def main():
